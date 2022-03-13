@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
 
 <body>
 
-    <div id="clock" class="container m-5 text-center"></div>
+    <div id="clock" class="m-5 text-center"></div>
 
     <script type="text/babel">
 
@@ -22,7 +22,16 @@
                 super(props);
                 this.state = {
                     nowTime: new Date(),
-                    display: false
+                    display: false,
+                    Text1: "Hello World",
+                    Text2: "Click Here!!",
+                    btnClassList: [
+                        "btn btn-info",
+                        "btn btn-success",
+                        "btn btn-primary",
+                        "btn btn-warning",
+                        "btn btn-danger"
+                    ]
                 };
             }
 
@@ -41,14 +50,26 @@
                 );
             }
 
+            CreateText(boolen) {
+                if (boolen) {
+                    return "Hello World";
+                }
+                else {
+                    return this.displaytime();
+                }
+            }
+
             random_bnt() {
-                const bntClass = {
-                    0: "btn-info",
-                    1: "btn-success"
-                };
-                let x = Math.floor(Math.random() * length(bntClass));
-                return(
-                    bntClass[x]
+                let x = Math.floor(Math.random() * this.state.btnClassList.length);
+                return (
+                    this.state.btnClassList[x]
+                );
+            }
+
+            order_btn(){
+                let x = this.state.nowTime.getSeconds();
+                return (
+                    this.state.btnClassList[x % 5]
                 );
             }
 
@@ -70,31 +91,22 @@
             }
 
             render() {
-                if (this.state.display) {
-                    return (
-                        <div>
-                            <h1>
-                                {this.displaytime()}
-                            </h1>
-                            <button onClick={() => { this.setState({ display: false }) }} className="btn btn-info">
-                                Hello World
-                            </button>
-                        </div>
-                    );
-
-                }
                 return (
                     <div>
                         <h1>
-                            Hello World
+                            {this.CreateText(this.state.display)}
                         </h1>
-                        <button onClick={() => { this.setState({ display: true }) }} className="btn btn-success">
-                            {this.displaytime()}
+                        <button onClick={
+                            () => { this.setState({ display: !this.state.display }) }}
+                            className={this.order_btn()}
+                        >
+                            {this.CreateText(!this.state.display)}
                         </button>
                     </div>
                 );
             }
         }
+
 
         // render
         ReactDOM.render(
@@ -112,8 +124,10 @@
         crossorigin="anonymous"></script>
 
     <!-- Load React. -->
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
 </body>
